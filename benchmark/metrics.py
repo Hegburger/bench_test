@@ -46,6 +46,38 @@ def char_error_rate(reference: str, hypothesis: str, case_sensitive: bool = Fals
     return prev[m] / max(n, m)
 
 
+def substring_cer(reference: str, hypothesis: str, case_sensitive: bool = False) -> float:
+    """Best-case CER by sliding a window of len(reference) over hypothesis.
+
+    For granularity mismatch: when a layout-level prediction covers multiple
+    GT regions, the GT text may be a substring of the long prediction text.
+    This finds the best alignment before computing CER.
+
+    Returns a value in [0, 1] (lower is better).
+    Falls back to regular CER if hypothesis is not longer than reference.
+    """
+    n = len(reference)
+    m = len(hypothesis)
+
+    if n == 0 or m == 0:
+        return char_error_rate(reference, hypothesis, case_sensitive)
+
+    if m <= n:
+        return char_error_rate(reference, hypothesis, case_sensitive)
+
+    # Slide window, find min CER
+    best = 1.0
+    for start in range(m - n + 1):
+        window = hypothesis[start:start + n]
+        cer = char_error_rate(reference, window, case_sensitive)
+        if cer < best:
+            best = cer
+        if best == 0.0:
+            break
+
+    return best
+
+
 def normalized_edit_distance(reference: str, hypothesis: str, case_sensitive: bool = False) -> float:
     """Alias for CER, synonym."""
     return char_error_rate(reference, hypothesis, case_sensitive)

@@ -14,6 +14,9 @@ python run_benchmark.py
 # 评测 PaddleOCR-VL-1.5 模型
 python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --output benchmark_results_paddle.json
 
+# Debug 模式：详细显示每对匹配和识别细节
+python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --debug
+
 # 自定义 IOU 阈值 / 禁用树编辑距离
 python run_benchmark.py --iou 0.6 --no-tree-edit
 ```

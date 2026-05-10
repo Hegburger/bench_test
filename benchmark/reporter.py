@@ -4,6 +4,16 @@ import json
 from pathlib import Path
 
 
+def _bbox_str(bbox: list[float]) -> str:
+    return f"[{bbox[0]:.0f},{bbox[1]:.0f},{bbox[2]:.0f},{bbox[3]:.0f}]"
+
+
+def _ok_fail(score: float, threshold: float = 0.3) -> str:
+    if score <= threshold:
+        return "OK"
+    return "FAIL"
+
+
 def print_summary(results: dict) -> None:
     """Print a human-readable summary to console."""
     summary = results.get("summary", {})
@@ -95,3 +105,112 @@ def compare_models(
     if output_path:
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(rows, f, ensure_ascii=False, indent=2)
+
+
+def print_debug_report(model_name: str, per_image: dict) -> None:
+    """Print detailed per-image matching and recognition report for debugging.
+
+    Shows every prediction, which GT it matched to, the match method (IOU vs
+    containment vs coverage), and the recognition score for each pair.
+    """
+    W = 80
+
+    for image_id, result in per_image.items():
+        if "error" in result:
+            print(f"\n{'='*W}")
+            print(f"  {image_id}  —  ERROR: {result['error']}")
+            print(f"{'='*W}")
+            continue
+
+        debug = result.get("debug", {})
+        if not debug:
+            print(f"\n  {image_id}: no debug data (run with --debug)")
+            continue
+
+        pairs = debug["pairs"]
+        unmatched_pred = debug["unmatched_pred"]
+        unmatched_gt = debug["unmatched_gt"]
+
+        print(f"\n{'='*W}")
+        print(f"  {image_id}  —  {debug['num_pred']} predictions  vs  {debug['num_gt']} GT regions")
+        print(f"{'='*W}")
+
+        # ── Matched pairs ──
+        matched = [p for p in pairs if p["type"] == "matched"]
+        if matched:
+            print(f"\n  [MATCHED PAIRS]  ({len(matched)} pairs)")
+            print(f"  {'':>4} {'Method':<12} {'Pred':<6} {'GT':<6} {'Rec':>6}  {'Status':<6}")
+            print(f"  {'':>4} {'-'*12} {'-'*6} {'-'*6} {'-'*6}  {'-'*6}")
+            for p in matched:
+                method = p.get("match_method", "?")
+                score = p.get("match_score", 0)
+                rec = p.get("rec_score")
+                pred_label = p["pred_label"]
+                gt_label = p["gt_label"]
+                pred_text = p.get("pred_text", "")[:50]
+                gt_text = p.get("gt_text", "")[:50]
+
+                if rec is not None:
+                    status = _ok_fail(rec)
+                    rec_str = f"{rec:.4f}"
+                else:
+                    status = "SKIP"
+                    rec_str = "N/A"
+
+                print(f"  P[{p['pred_idx']:>2}] {method:<12} {pred_label:<6} → GT[{p['gt_idx']:>2}] {gt_label:<6} {rec_str:>6}  {status:<6}")
+                print(f"       pred: {_bbox_str(p['pred_bbox'])}  \"{pred_text}\"")
+                print(f"       gt:   {_bbox_str(p['gt_bbox'])}  \"{gt_text}\"")
+
+        # ── Coverage pairs ──
+        coverage = [p for p in pairs if p["type"] == "coverage"]
+        if coverage:
+            print(f"\n  [COVERAGE RECOGNITION]  ({len(coverage)} pairs)")
+            print(f"  {'':>4} {'Cover':>8}  {'GT':<6} {'Rec':>6}  {'Status':<6}")
+            print(f"  {'':>4} {'-'*8}  {'-'*6} {'-'*6}  {'-'*6}")
+            for p in coverage:
+                cov = p.get("coverage", 0)
+                rec = p.get("rec_score", 1.0)
+                gt_label = p["gt_label"]
+                gt_text = p.get("gt_text", "")[:50]
+                pred_text = p.get("pred_text", "")[:50]
+                status = _ok_fail(rec)
+
+                print(f"       {cov:>8.3f}  GT[{p['gt_idx']:>2}] {gt_label:<6} {rec:.4f}  {status:<6}")
+                print(f"       ← P[{p['pred_idx']:>2}] {p['pred_label']:<6}  \"{gt_text}\"")
+                print(f"         pred: \"{pred_text}\"")
+
+        # ── Unmatched predictions ──
+        if unmatched_pred:
+            print(f"\n  [UNMATCHED PREDICTIONS]  ({len(unmatched_pred)})")
+            for up in unmatched_pred:
+                print(f"  P[{up['idx']:>2}] {up['label']:<10} {_bbox_str(up['bbox'])}  \"{up['text']}\"")
+
+        # ── Unmatched GT ──
+        if unmatched_gt:
+            print(f"\n  [UNMATCHED GT]  ({len(unmatched_gt)})")
+            for ug in unmatched_gt:
+                print(f"  GT[{ug['idx']:>2}] {ug['label']:<10} {_bbox_str(ug['bbox'])}  \"{ug['text']}\"")
+            # Group by label for summary
+            from collections import Counter
+            label_counts = Counter(ug["label"] for ug in unmatched_gt)
+            parts = ", ".join(f"{c}x {l}" for l, c in sorted(label_counts.items()))
+            print(f"       → {parts}")
+
+        # ── Recognition summary per label ──
+        rec = result.get("recognition", {})
+        print(f"\n  [RECOGNITION SUMMARY]")
+        for label in ("text", "liding"):
+            rd = rec.get(label, {})
+            direct = rd.get("num_pairs", 0) - rd.get("num_coverage", 0)
+            cov = rd.get("num_coverage", 0)
+            mean = rd.get("mean", 0)
+            print(f"  {label:<10} direct={direct}, coverage={cov}, mean_err={mean:.4f}")
+
+        # Classification
+        cls_info = result.get("classification", {})
+        if cls_info.get("confusion"):
+            print(f"\n  [CLASSIFICATION]  acc={cls_info['accuracy']:.3f}")
+            for k, v in cls_info["confusion"].items():
+                print(f"  {k}: {v}")
+
+        print(f"\n  Composite: {result['composite']:.4f}")

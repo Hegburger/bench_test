@@ -20,6 +20,19 @@ class EvalConfig:
     iou_threshold: float = 0.5
     """Minimum IOU for a predicted region to be considered a match."""
 
+    containment_threshold: float = 0.7
+    """Minimum containment ratio (max(gt_in_pred, pred_in_gt)) for matching
+    when IOU fails. Handles granularity mismatch between layout-level predictions
+    and character-level ground truth."""
+
+    recognition_cover_threshold: float = 0.5
+    """Minimum coverage ratio for a GT text region to be evaluated for
+    recognition against an unmatched prediction via substring CER."""
+
+    # --- Debug ---
+    debug: bool = False
+    """If True, include per-pair matching and recognition details in results."""
+
     # --- Text metrics ---
     text_case_sensitive: bool = False
     """Whether text CER is case-sensitive."""

@@ -1,7 +1,8 @@
 """Region matching via IOU + Hungarian algorithm.
 
 Matches predicted regions to ground-truth regions using 1-to-1 bipartite
-matching that maximizes total IOU, subject to a minimum IOU threshold.
+matching that maximizes total IOU (with containment fallback), subject to
+a minimum matching threshold.
 """
 
 import itertools
@@ -9,27 +10,43 @@ import itertools
 from benchmark.schema import Region
 
 
-def compute_iou(a: Region, b: Region) -> float:
-    """Compute Intersection-over-Union of two regions' bounding boxes."""
-    xa1, ya1, xa2, ya2 = a.bbox
-    xb1, yb1, xb2, yb2 = b.bbox
-
-    # Intersection
+def intersection_area(bbox_a: list[float], bbox_b: list[float]) -> float:
+    """Compute intersection area of two bounding boxes."""
+    xa1, ya1, xa2, ya2 = bbox_a
+    xb1, yb1, xb2, yb2 = bbox_b
     xi1 = max(xa1, xb1)
     yi1 = max(ya1, yb1)
     xi2 = min(xa2, xb2)
     yi2 = min(ya2, yb2)
-
     if xi1 >= xi2 or yi1 >= yi2:
         return 0.0
+    return (xi2 - xi1) * (yi2 - yi1)
 
-    inter_area = (xi2 - xi1) * (yi2 - yi1)
-    union_area = a.area + b.area - inter_area
 
-    if union_area <= 0:
+def compute_iou(a: Region, b: Region) -> float:
+    """Compute Intersection-over-Union of two regions' bounding boxes."""
+    inter = intersection_area(a.bbox, b.bbox)
+    if inter <= 0:
         return 0.0
+    union = a.area + b.area - inter
+    if union <= 0:
+        return 0.0
+    return inter / union
 
-    return inter_area / union_area
+
+def compute_containment(a: Region, b: Region) -> tuple[float, float]:
+    """Compute containment ratios between two regions.
+
+    Returns (a_in_b, b_in_a) where:
+      a_in_b = fraction of region a that is inside region b
+      b_in_a = fraction of region b that is inside region a
+    """
+    inter = intersection_area(a.bbox, b.bbox)
+    if inter <= 0:
+        return 0.0, 0.0
+    a_area = a.area
+    b_area = b.area
+    return inter / a_area if a_area > 0 else 0.0, inter / b_area if b_area > 0 else 0.0
 
 
 def hungarian_match(
@@ -122,16 +139,27 @@ def _matching_cost(
     gt: Region,
     iou_threshold: float,
     center_dist_threshold: float,
+    containment_threshold: float = 0.7,
 ) -> float:
     """Compute matching cost between two regions.
 
     Returns cost in [0, 1] for matchable pairs, or 1e9 for unmatchable.
-    Uses IOU primarily, with center-distance fallback for small regions.
+    Uses IOU primarily, with containment and center-distance as fallbacks.
     """
     iou = compute_iou(pred, gt)
 
     if iou >= iou_threshold:
         return 1.0 - iou
+
+    # Containment fallback: handles granularity mismatch where one region
+    # substantially contains the other (large layout block vs small text region)
+    inter = intersection_area(pred.bbox, gt.bbox)
+    if inter > 0:
+        gt_in_pred = inter / gt.area
+        pred_in_gt = inter / pred.area
+        containment = max(gt_in_pred, pred_in_gt)
+        if containment >= containment_threshold:
+            return 1.0 - containment
 
     # For very small regions, check center distance as fallback
     pred_area = pred.area
@@ -154,18 +182,21 @@ def match_regions(
     gt_regions: list[Region],
     iou_threshold: float = 0.5,
     center_dist_threshold: float = 20.0,
+    containment_threshold: float = 0.7,
 ) -> dict:
     """Match predicted regions to GT regions via IOU + Hungarian.
 
-    For extremely small regions (area < 100 px^2), also considers
-    center-point distance as a matching criterion when IOU is low.
+    Uses IOU primarily, with containment as fallback for granularity mismatch,
+    and center-distance as last-resort for tiny regions (< 100 px^2).
 
     Args:
         iou_threshold: Minimum IOU for a match.
         center_dist_threshold: Max center distance (pixels) for tiny region matching.
+        containment_threshold: Minimum containment ratio for fallback matching.
+            A pair matches if max(gt_in_pred, pred_in_gt) >= this value.
 
     Returns a dict with:
-        matches: list of (pred_idx, gt_idx, iou) for matched pairs
+        matches: list of (pred_idx, gt_idx, iou_or_containment) for matched pairs
         unmatched_pred: list of pred_idx
         unmatched_gt: list of gt_idx
         per_label: dict mapping label -> match details
@@ -188,7 +219,7 @@ def match_regions(
         for j in range(n_gt):
             cost = _matching_cost(
                 pred_regions[i], gt_regions[j],
-                iou_threshold, center_dist_threshold,
+                iou_threshold, center_dist_threshold, containment_threshold,
             )
             row.append(cost)
         cost_matrix.append(row)
@@ -236,7 +267,7 @@ def match_regions(
             for gj in gt_indices:
                 cost = _matching_cost(
                     pred_regions[pi], gt_regions[gj],
-                    iou_threshold, center_dist_threshold,
+                    iou_threshold, center_dist_threshold, containment_threshold,
                 )
                 row.append(cost)
             sub_cost.append(row)

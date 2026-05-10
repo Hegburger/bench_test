@@ -19,6 +19,7 @@ from benchmark import (
     print_summary,
     save_json_report,
     compare_models,
+    print_debug_report,
 )
 from benchmark.adapters import PaddleOCRAdapter, PaddleOCRVAdapter, GeminiAdapter
 
@@ -125,7 +126,9 @@ def main():
     parser.add_argument("--model-dir", default=None,
                        help="Directory with model prediction JSON files")
     parser.add_argument("--model", default=None,
-                       help="Model adapter to use: paddle_ocr, gemini")
+                       help="Model adapter to use: paddle_ocr, paddle_ocr_vl, gemini")
+    parser.add_argument("--debug", action="store_true",
+                       help="Print detailed per-pair matching and recognition report")
 
     args = parser.parse_args()
 
@@ -150,6 +153,7 @@ def main():
     config = EvalConfig(
         iou_threshold=args.iou,
         liding_use_tree_edit=not args.no_tree_edit,
+        debug=args.debug,
     )
 
     # Models to evaluate
@@ -178,6 +182,9 @@ def main():
                 results = evaluate_dataset(predictions, ground_truths, config)
                 model_results[adapter.model_name] = results
                 print_summary(results)
+                if args.debug:
+                    per_image = results.get("per_image", {})
+                    print_debug_report(adapter.model_name, per_image)
     else:
         # Synthetic test
         print("\nUsing synthetic (noised GT) predictions for pipeline testing...")
