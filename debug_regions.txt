@@ -1,0 +1,27 @@
+古文字导论_165: 10 regions
+  text: area=2875, w=41, h=70
+  text: area=132, w=6, h=24
+  oracle: area=8, w=4, h=2
+  oracle: area=11, w=4, h=2
+  oracle: area=8, w=4, h=2
+  oracle: area=10, w=4, h=2
+  oracle: area=14, w=4, h=3
+  text: area=129, w=5, h=24
+  text: area=1422, w=21, h=69
+  text: area=20, w=6, h=3
+小屯南地甲骨-2118: 75 regions
+  text: area=33, w=18, h=2
+  text: area=176, w=41, h=4
+  text: area=258, w=41, h=6
+  text: area=332, w=40, h=8
+  text: area=170, w=41, h=4
+  text: area=345, w=41, h=8
+  text: area=82, w=20, h=4
+  text: area=15, w=8, h=2
+  text: area=85, w=41, h=2
+  text: area=261, w=41, h=6
+  text: area=236, w=37, h=6
+  text: area=173, w=41, h=4
+  text: area=72, w=18, h=4
+  text: area=258, w=41, h=6
+  text: area=537, w=41, h=13

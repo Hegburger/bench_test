@@ -1,0 +1,97 @@
+[ {
+  "prunedResult" : {
+    "model_settings" : {
+      "use_doc_preprocessor" : false,
+      "use_layout_detection" : true,
+      "use_chart_recognition" : false,
+      "use_seal_recognition" : true,
+      "use_ocr_for_image_block" : false,
+      "format_block_content" : true,
+      "merge_layout_blocks" : true,
+      "markdown_ignore_labels" : [ "number", "footnote", "header", "header_image", "footer", "footer_image", "aside_text" ],
+      "return_layout_polygon_points" : true
+    },
+    "parsing_res_list" : [ {
+      "block_label" : "header_image",
+      "block_content" : "",
+      "block_bbox" : [ 533, 324, 562, 351 ],
+      "block_id" : 0,
+      "block_order" : null,
+      "group_id" : 0,
+      "block_polygon_points" : [ [ 533.0, 324.0 ], [ 561.0, 324.0 ], [ 561.0, 350.0 ], [ 533.0, 350.0 ] ]
+    }, {
+      "block_label" : "vertical_text",
+      "block_content" : "說這樣話的人一定對於中國的古文字不狠\n\n熟悉因為他們不知道中國的古文字學完全是由\n\n對照法出發的",
+      "block_bbox" : [ 414, 145, 533, 798 ],
+      "block_id" : 1,
+      "block_order" : 1,
+      "group_id" : 1,
+      "block_polygon_points" : [ [ 414.0, 145.0 ], [ 533.0, 145.0 ], [ 533.0, 798.0 ], [ 414.0, 798.0 ] ]
+    }, {
+      "block_label" : "vertical_text",
+      "block_content" : "埃及文字是已被忘却而重行發見的但中國\n\n文字是從很古的時代一直到現在還是行用的所\n\n以研究埃及古文必須靠羅塞達刻石做鑰匙而中\n\n國文字裡最古的○或○等字和現代的日\n\n山林行等字却不需要任何鑰匙就可以得到比較\n\n中國古代文字和近代文字的比較至少比用希臘\n\n文字和埃及文字比較更可靠些。",
+      "block_bbox" : [ 113, 142, 407, 797 ],
+      "block_id" : 2,
+      "block_order" : 2,
+      "group_id" : 2,
+      "block_polygon_points" : [ [ 113.0, 142.0 ], [ 407.0, 142.0 ], [ 407.0, 797.0 ], [ 113.0, 797.0 ] ]
+    }, {
+      "block_label" : "number",
+      "block_content" : "164",
+      "block_bbox" : [ 505, 830, 533, 846 ],
+      "block_id" : 3,
+      "block_order" : null,
+      "group_id" : 3,
+      "block_polygon_points" : [ [ 505.0, 830.0 ], [ 532.0, 830.0 ], [ 532.0, 845.0 ], [ 505.0, 845.0 ] ]
+    } ],
+    "layout_det_res" : {
+      "boxes" : [ {
+        "cls_id" : 13,
+        "label" : "header_image",
+        "score" : 0.6713069081306458,
+        "coordinate" : [ 533, 324, 562, 351 ],
+        "order" : null,
+        "polygon_points" : [ [ 533.0, 324.0 ], [ 561.0, 324.0 ], [ 561.0, 350.0 ], [ 533.0, 350.0 ] ]
+      }, {
+        "cls_id" : 23,
+        "label" : "vertical_text",
+        "score" : 0.9397305250167847,
+        "coordinate" : [ 414, 145, 533, 798 ],
+        "order" : 1,
+        "polygon_points" : [ [ 414.0, 145.0 ], [ 533.0, 145.0 ], [ 533.0, 798.0 ], [ 414.0, 798.0 ] ]
+      }, {
+        "cls_id" : 23,
+        "label" : "vertical_text",
+        "score" : 0.9634636044502258,
+        "coordinate" : [ 113, 142, 407, 797 ],
+        "order" : 2,
+        "polygon_points" : [ [ 113.0, 142.0 ], [ 407.0, 142.0 ], [ 407.0, 797.0 ], [ 113.0, 797.0 ] ]
+      }, {
+        "cls_id" : 16,
+        "label" : "number",
+        "score" : 0.8037223815917969,
+        "coordinate" : [ 505, 830, 533, 846 ],
+        "order" : 3,
+        "polygon_points" : [ [ 505.0, 830.0 ], [ 532.0, 830.0 ], [ 532.0, 845.0 ], [ 505.0, 845.0 ] ]
+      } ]
+    },
+    "overall_ocr_res" : null,
+    "formula_res_list" : null,
+    "table_res_list" : null,
+    "seal_res_list" : null,
+    "doc_preprocessor_res" : null,
+    "spotting_res" : null
+  },
+  "markdown" : {
+    "text" : "說這樣話的人一定對於中國的古文字不狠\n\n熟悉因為他們不知道中國的古文字學完全是由\n\n對照法出發的\n\n埃及文字是已被忘却而重行誅見的但中國\n\n文字是從很古的時代一直到現在還是行用的所\n\n以研究埃及古文必須靠羅塞達刻石做鑰匙而中\n\n國文字裡最古的○或○也等字和現代的日\n\n山州行等字却不需要任何鑰匙就可以得到比較\n\n中國古代文字和近代文字的比較至少比用希臘\n\n文字和埃及文字比較更可靠些。",
+    "images" : {
+      "imgs/img_in_header_image_box_533_324_562_351.jpg" : "https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl-15//dfeacd64-ea2b-4413-8556-79611ed980f0/markdown_0/imgs/img_in_header_image_box_533_324_562_351.jpg?authorization=bce-auth-v1%2FALTAKDN8mY5KlNI7zaRpLmOqrw%2F2026-05-08T08%3A37%3A40Z%2F-1%2F%2Fbecaf3beeec0a58f946e40c30e68c74a4b1e4f4e8d3f798bf8fb8f280d9bf639"
+    },
+    "isStart" : null,
+    "isEnd" : null
+  },
+  "outputImages" : {
+    "layout_det_res" : "https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl-15//dfeacd64-ea2b-4413-8556-79611ed980f0/layout_det_res_0.jpg?authorization=bce-auth-v1%2FALTAKDN8mY5KlNI7zaRpLmOqrw%2F2026-05-08T08%3A37%3A40Z%2F-1%2F%2F4a115ee7fa329feb609ea1742d3a9cb657da6706556bf819830ff6be7ca3c7d4"
+  },
+  "inputImage" : "https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl-15//dfeacd64-ea2b-4413-8556-79611ed980f0/input_img_0.jpg?authorization=bce-auth-v1%2FALTAKDN8mY5KlNI7zaRpLmOqrw%2F2026-05-08T08%3A37%3A40Z%2F-1%2F%2F9fe03fd861d1d688e8fc75d3e1d8176a5100705fe7dd7a27355ae20d0165c2a1"
+} ]

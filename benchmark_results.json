@@ -1,0 +1,304 @@
+{
+  "models": {
+    "SyntheticTest": {
+      "per_image": {
+        "古文字导论_165": {
+          "image_id": "古文字导论_165",
+          "detection": {
+            "text": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 5,
+              "num_gt": 5,
+              "num_matched": 5
+            },
+            "liding": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "oracle": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 5,
+              "num_gt": 5,
+              "num_matched": 5
+            },
+            "picture": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "overall": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 10,
+              "num_gt": 10,
+              "num_matched": 10
+            }
+          },
+          "classification": {
+            "accuracy": 1.0,
+            "correct": 10,
+            "total": 10,
+            "confusion": {
+              "text -> text": 5,
+              "oracle -> oracle": 5
+            }
+          },
+          "recognition": {
+            "text": {
+              "scores": [
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              "num_pairs": 5,
+              "mean": 0.2
+            },
+            "liding": {
+              "scores": [],
+              "num_pairs": 0,
+              "mean": 0.0
+            }
+          },
+          "composite": 0.42999999999999994
+        },
+        "小屯南地甲骨-2118": {
+          "image_id": "小屯南地甲骨-2118",
+          "detection": {
+            "text": {
+              "precision": 1.0,
+              "recall": 0.9230769230769231,
+              "f1": 0.9600000000000001,
+              "num_pred": 48,
+              "num_gt": 52,
+              "num_matched": 48
+            },
+            "liding": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 11,
+              "num_gt": 11,
+              "num_matched": 11
+            },
+            "oracle": {
+              "precision": 1.0,
+              "recall": 0.75,
+              "f1": 0.8571428571428571,
+              "num_pred": 9,
+              "num_gt": 12,
+              "num_matched": 9
+            },
+            "picture": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "overall": {
+              "precision": 1.0,
+              "recall": 0.9066666666666666,
+              "f1": 0.9510489510489509,
+              "num_pred": 68,
+              "num_gt": 75,
+              "num_matched": 68
+            }
+          },
+          "classification": {
+            "accuracy": 1.0,
+            "correct": 68,
+            "total": 68,
+            "confusion": {
+              "text -> text": 48,
+              "liding -> liding": 11,
+              "oracle -> oracle": 9
+            }
+          },
+          "recognition": {
+            "text": {
+              "scores": [
+                0.0,
+                0.0,
+                0.0,
+                0.04878048780487805,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.3333333333333333,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "num_pairs": 48,
+              "mean": 0.028794037940379404
+            },
+            "liding": {
+              "scores": [
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                },
+                {
+                  "string_ned": 0.0,
+                  "tree_ted": 0.0,
+                  "combined": 0.0
+                }
+              ],
+              "num_pairs": 11,
+              "mean": 0.0
+            }
+          },
+          "composite": 0.8548966318234612
+        }
+      },
+      "summary": {
+        "detection": {
+          "text": {
+            "mean_precision": 1.0,
+            "mean_recall": 0.9615384615384616,
+            "mean_f1": 0.98
+          },
+          "liding": {
+            "mean_precision": 0.5,
+            "mean_recall": 0.5,
+            "mean_f1": 0.5
+          },
+          "oracle": {
+            "mean_precision": 1.0,
+            "mean_recall": 0.875,
+            "mean_f1": 0.9285714285714286
+          },
+          "picture": {
+            "mean_precision": 0.0,
+            "mean_recall": 0.0,
+            "mean_f1": 0.0
+          },
+          "overall": {
+            "mean_precision": 1.0,
+            "mean_recall": 0.9533333333333334,
+            "mean_f1": 0.9755244755244754
+          }
+        },
+        "recognition": {
+          "text": {
+            "mean_error_rate": 0.11439701897018971
+          },
+          "liding": {
+            "mean_error_rate": 0.0
+          }
+        },
+        "classification_accuracy": 1.0,
+        "mean_composite": 0.6424483159117306,
+        "num_images": 2,
+        "num_evaluated": 2
+      },
+      "config": {
+        "iou_threshold": 0.5,
+        "liding_use_tree_edit": true
+      }
+    }
+  },
+  "gt_dir": "H:\\OBS\\甲骨文\\文献资料\\bench_test\\data\\GT",
+  "config": {
+    "iou_threshold": 0.5,
+    "liding_use_tree_edit": true
+  }
+}

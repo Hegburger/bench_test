@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(python run_benchmark.py)",
+      "Bash(python -c ':*)",
+      "Bash(python process.py)",
+      "Bash(python run_benchmark.py --output benchmark_results.json)",
+      "Bash(python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr --output benchmark_results_paddle.json)",
+      "Bash(python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --output benchmark_results_paddle.json)",
+      "Bash(mkdir -p \"C:/Users/17163/.claude/projects/h--OBS----------bench-test/memory\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\17163\\.claude\\projects\\h--OBS----------bench-test"
+    ]
+  }
+}
