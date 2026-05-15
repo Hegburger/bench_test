@@ -32,8 +32,13 @@ bench_test/
 │       ├── paddle_ocr.py            # PaddleOCR / PaddleOCR-VL 适配器
 │       └── gemini.py                # Gemini 适配器
 ├── run_benchmark.py                 # CLI 入口
+├── visualize_benchmark.py           # 交互式可视化生成器
 ├── benchmark_results.json           # 评测结果（JSON）
-└── CLAUDE.md                        # 开发文档
+├── benchmark_results_paddle.json    # PaddleOCR-VL 评测结果
+├── debug_results.json               # Debug 模式下的逐对匹配详情
+├── benchmark_viz.html               # 可视化 HTML（自包含，可直接在浏览器打开）
+├── CLAUDE.md                        # AI 开发文档
+└── README.md                        # 本文件
 ```
 
 ## 标签类型
@@ -164,7 +169,11 @@ python run_benchmark.py
 python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl
 
 # Debug 模式：显示每对预测与 GT 的匹配详情、识别得分、覆盖关系
-python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --debug
+python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --debug --output debug_results.json
+
+# 生成交互式可视化（从 debug 结果 + 原图）
+python visualize_benchmark.py --debug debug_results.json --image-dir data/image --output benchmark_viz.html
+# 然后在浏览器中打开 benchmark_viz.html
 
 # 自定义参数
 python run_benchmark.py --iou 0.6 --no-tree-edit --output results.json
@@ -241,6 +250,31 @@ adapter_map = {
 }
 ```
 
+### 5. 可视化评测结果
+
+```bash
+# 1. 先用 --debug 运行评测，生成逐对匹配详情
+python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --debug --output debug_results.json
+
+# 2. 生成交互式 HTML
+python visualize_benchmark.py --debug debug_results.json --image-dir data/image --output benchmark_viz.html
+
+# 3. 在浏览器中打开 benchmark_viz.html
+```
+
+`visualize_benchmark.py` 将 debug 结果和原始图片嵌入单个自包含 HTML 文件，提供：
+
+| 图层 | 功能 |
+|------|------|
+| **Predictions / GT** | 独立开关所有预测框和 GT 框 |
+| **已匹配对** | IOU 或包含关系匹配的 pred-GT 对 |
+| **覆盖识别对** | 未匹配但通过覆盖回退评估的 GT |
+| **未匹配 Pred / GT** | 孤立区域 |
+| **匹配连线** | 颜色区分 IOU(蓝)、包含(琥珀)、覆盖(紫) |
+| **文字标签** | 显示 label、错误率、覆盖率等 |
+
+交互功能：点击框选 → 侧栏显示坐标/文本/分数详情；悬浮预览；滚轮缩放；拖拽平移；Esc 取消选择。
+
 ## 已知局限
 
 ### 粒度失配
@@ -264,13 +298,14 @@ GT 标注在字符/词组级（一张图 75 个 region），版面分析模型�
 
 ### 最新评测结果 (PaddleOCR-VL-1.5)
 
-| 指标 | 得分 |
-|------|------|
-| text detection F1 | 0.496 |
-| text recognition CER | 0.122 (52/52 GT 覆盖) |
-| liding detection F1 | 0.000 (模型无 liding 分类能力) |
-| oracle detection F1 | 0.000 (模型无 oracle 检测能力) |
-| 综合得分 | 0.087 |
+| 指标 | 得分 | 说明 |
+|------|------|------|
+| text detection F1 | 0.496 | P=0.833, R=0.363（17 pred vs 57 text GT） |
+| text recognition CER | 0.122 | 57/57 GT text 被覆盖评测 |
+| liding detection F1 | 0.000 | 模型无 liding 分类能力 |
+| oracle detection F1 | 0.000 | 模型无 oracle 检测能力 |
+| classification accuracy | 0.574 | 17 个匹配中有 6 个误标（text→liding/oracle） |
+| **综合得分** | **0.087** | 受 liding/oracle=0 和 class_acc 乘法惩罚 |
 
 ## 配置项
 

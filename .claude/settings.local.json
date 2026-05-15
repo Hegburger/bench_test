@@ -9,7 +9,11 @@
       "Bash(python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr --output benchmark_results_paddle.json)",
       "Bash(python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --output benchmark_results_paddle.json)",
       "Bash(mkdir -p \"C:/Users/17163/.claude/projects/h--OBS----------bench-test/memory\")",
-      "Bash(PYTHONIOENCODING=utf-8 python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --output benchmark_results_paddle.json --debug)"
+      "Bash(PYTHONIOENCODING=utf-8 python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --output benchmark_results_paddle.json --debug)",
+      "Bash(python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --debug)",
+      "Bash(python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl)",
+      "Bash(python -c ' *)",
+      "Bash(python visualize_benchmark.py --debug debug_results.json --image-dir data/image --output benchmark_viz.html)"
     ],
     "additionalDirectories": [
       "C:\\Users\\17163\\.claude\\projects\\h--OBS----------bench-test"

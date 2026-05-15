@@ -12,6 +12,13 @@ import json
 import sys
 from pathlib import Path
 
+# Fix Unicode output on Windows GBK terminals
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 from benchmark import (
     EvalConfig,
     load_gt_directory,

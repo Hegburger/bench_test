@@ -31,7 +31,7 @@ def get_image_size(image_path: str) -> tuple[int, int]:
 
 
 def main():
-    json_path = "project-5-at-2026-05-08-23-23-83ac239c.json"
+    json_path = "project-5-at-2026-05-15-11-36-e991b6c8.json"
     # 图片目录（相对于此脚本）
     image_dir = Path(__file__).resolve().parent.parent / "image"
 
