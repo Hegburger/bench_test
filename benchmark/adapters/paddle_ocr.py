@@ -1,10 +1,64 @@
 """Adapter for PaddleOCR / PaddleOCR-VL output formats."""
 
 import json
+import re
+from html.parser import HTMLParser
 from pathlib import Path
 
 from benchmark.adapters.base import ModelAdapter
 from benchmark.schema import ImageAnnotation, Region
+
+
+class _TableTextExtractor(HTMLParser):
+    """Extract cell text from HTML tables in row-major order."""
+
+    def __init__(self):
+        super().__init__()
+        self.rows: list[list[str]] = []
+        self._current_row: list[str] = []
+        self._current_cell: list[str] = []
+        self._in_cell = False
+
+    def handle_starttag(self, tag, _attrs):
+        if tag in ("td", "th"):
+            self._in_cell = True
+            self._current_cell = []
+
+    def handle_endtag(self, tag):
+        if tag in ("td", "th"):
+            self._in_cell = False
+            self._current_row.append("".join(self._current_cell).strip())
+        elif tag == "tr":
+            if self._current_row:
+                self.rows.append(self._current_row)
+            self._current_row = []
+
+    def handle_data(self, data):
+        if self._in_cell:
+            self._current_cell.append(data)
+
+    def get_text(self) -> str:
+        return "\n".join(" ".join(row) for row in self.rows)
+
+
+def _extract_table_text(html_block: str) -> str:
+    """Extract text content from an HTML <table> string."""
+    extractor = _TableTextExtractor()
+    try:
+        extractor.feed(html_block)
+    except Exception:
+        return html_block  # fallback: keep original
+    text = extractor.get_text()
+    return text if text.strip() else html_block
+
+
+def _normalize_text(text: str) -> str:
+    """Normalize escape sequences and whitespace for text evaluation."""
+    text = text.replace("\\n", " ").replace("\\r", " ").replace("\\t", " ")
+    text = text.replace("\n", " ").replace("\r", " ").replace("\t", " ")
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
 
 # PaddleOCR-VL layout labels → benchmark label types
 _VL_LABEL_MAP = {
@@ -14,15 +68,18 @@ _VL_LABEL_MAP = {
     "header": "text",
     "footer": "text",
     "footnote": "text",
+    "vision_footnote": "text",
+    "figure_title": "text",
+    "paragraph_title": "text",
     "aside_text": "text",
     "formula": "text",
     "header_image": "picture",
     "footer_image": "picture",
     "image": "picture",
     "figure": "picture",
-    "table": "picture",
     "chart": "picture",
     "seal": "picture",
+    "table": "text",
 }
 
 
@@ -84,6 +141,7 @@ class PaddleOCRVAdapter(ModelAdapter):
             return ImageAnnotation(image_id=image_id, image_path=image_path, regions=[])
 
         regions = []
+
         for block in parsing_list:
             block_label = block.get("block_label", "text")
             content = block.get("block_content", "")
@@ -93,6 +151,15 @@ class PaddleOCRVAdapter(ModelAdapter):
                 continue
 
             label = _VL_LABEL_MAP.get(block_label, "text")
+
+            # Extract text from HTML tables
+            if block_label == "table" and content.strip().startswith("<"):
+                content = _extract_table_text(content)
+
+            # Normalize escape characters
+            if label == "text":
+                content = _normalize_text(content)
+
             region = Region(
                 bbox=[float(v) for v in bbox],
                 label=label,

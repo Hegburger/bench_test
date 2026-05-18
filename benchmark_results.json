@@ -2,21 +2,214 @@
   "models": {
     "PaddleOCR-VL-1.5": {
       "per_image": {
+        "p19": {
+          "image_id": "p19",
+          "detection": {
+            "text": {
+              "precision": 1.0,
+              "recall": 0.08,
+              "f1": 0.14814814814814814,
+              "num_pred": 2,
+              "num_gt": 25,
+              "num_matched": 2
+            },
+            "liding": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "oracle": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "picture": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "overall": {
+              "precision": 1.0,
+              "recall": 0.08,
+              "f1": 0.14814814814814814,
+              "num_pred": 2,
+              "num_gt": 25,
+              "num_matched": 2
+            }
+          },
+          "classification": {
+            "accuracy": 1.0,
+            "correct": 2,
+            "total": 2,
+            "confusion": {
+              "text -> text": 2
+            }
+          },
+          "recognition": {
+            "text": {
+              "scores": [
+                0.8963414634146342,
+                0.9393939393939394,
+                0.0,
+                0.0,
+                0.12121212121212122,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.08823529411764706,
+                0.15151515151515152,
+                0.5,
+                0.0,
+                0.0,
+                0.1,
+                0.09090909090909091,
+                0.0,
+                0.0,
+                1.0,
+                0.0625,
+                0.75
+              ],
+              "num_pairs": 25,
+              "mean": 0.24800428242250339,
+              "num_coverage": 23
+            },
+            "liding": {
+              "scores": [],
+              "num_pairs": 0,
+              "mean": 0.0
+            }
+          },
+          "composite": 0.6889923705410553
+        },
+        "page1": {
+          "image_id": "page1",
+          "detection": {
+            "text": {
+              "precision": 1.0,
+              "recall": 0.06060606060606061,
+              "f1": 0.1142857142857143,
+              "num_pred": 2,
+              "num_gt": 33,
+              "num_matched": 2
+            },
+            "liding": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "oracle": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "picture": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "overall": {
+              "precision": 1.0,
+              "recall": 0.06060606060606061,
+              "f1": 0.1142857142857143,
+              "num_pred": 2,
+              "num_gt": 33,
+              "num_matched": 2
+            }
+          },
+          "classification": {
+            "accuracy": 1.0,
+            "correct": 2,
+            "total": 2,
+            "confusion": {
+              "text -> text": 2
+            }
+          },
+          "recognition": {
+            "text": {
+              "scores": [
+                0.9839357429718876,
+                0.9174311926605505,
+                0.11538461538461539,
+                0.0,
+                0.10526315789473684,
+                0.0,
+                0.2,
+                0.058823529411764705,
+                0.07692307692307693,
+                0.0,
+                0.0,
+                0.3333333333333333,
+                0.10294117647058823,
+                0.75,
+                0.0,
+                0.0,
+                0.1,
+                0.2857142857142857,
+                0.15384615384615385,
+                0.2,
+                0.2,
+                0.5,
+                0.0,
+                0.25,
+                0.3333333333333333,
+                0.0,
+                0.0,
+                0.15,
+                0.0,
+                0.16666666666666666,
+                0.3333333333333333,
+                0.0
+              ],
+              "num_pairs": 32,
+              "mean": 0.1974040499357602,
+              "num_coverage": 30
+            },
+            "liding": {
+              "scores": [],
+              "num_pairs": 0,
+              "mean": 0.0
+            }
+          },
+          "composite": 0.6821038380025696
+        },
         "古文字导论_165": {
           "image_id": "古文字导论_165",
           "detection": {
             "text": {
-              "precision": 0.6666666666666666,
-              "recall": 0.4,
-              "f1": 0.5,
+              "precision": 1.0,
+              "recall": 0.42857142857142855,
+              "f1": 0.6,
               "num_pred": 3,
-              "num_gt": 5,
-              "num_matched": 2
+              "num_gt": 7,
+              "num_matched": 3
             },
             "liding": {
-              "precision": 0.0,
-              "recall": 0.0,
-              "f1": 0.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
               "num_pred": 0,
               "num_gt": 0,
               "num_matched": 0
@@ -38,35 +231,37 @@
               "num_matched": 0
             },
             "overall": {
-              "precision": 0.5,
-              "recall": 0.2,
-              "f1": 0.28571428571428575,
+              "precision": 0.75,
+              "recall": 0.25,
+              "f1": 0.375,
               "num_pred": 4,
-              "num_gt": 10,
-              "num_matched": 2
+              "num_gt": 12,
+              "num_matched": 3
             }
           },
           "classification": {
-            "accuracy": 0.5,
-            "correct": 1,
-            "total": 2,
+            "accuracy": 0.6666666666666666,
+            "correct": 2,
+            "total": 3,
             "confusion": {
-              "text -> text": 1,
+              "text -> text": 2,
               "text -> oracle": 1
             }
           },
           "recognition": {
             "text": {
               "scores": [
-                0.5803571428571429,
+                0.021739130434782608,
                 0.0,
                 0.0,
-                0.017241379310344827,
-                0.0
+                0.0,
+                0.017857142857142856,
+                0.0,
+                0.016666666666666666
               ],
-              "num_pairs": 5,
-              "mean": 0.11951970443349755,
-              "num_coverage": 4
+              "num_pairs": 7,
+              "mean": 0.008037562851227448,
+              "num_coverage": 5
             },
             "liding": {
               "scores": [],
@@ -74,7 +269,7 @@
               "mean": 0.0
             }
           },
-          "composite": 0.07704202586206896
+          "composite": 0.4055414078674948
         },
         "小屯南地甲骨-2118": {
           "image_id": "小屯南地甲骨-2118",
@@ -104,9 +299,9 @@
               "num_matched": 0
             },
             "picture": {
-              "precision": 0.0,
-              "recall": 0.0,
-              "f1": 0.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
               "num_pred": 0,
               "num_gt": 0,
               "num_matched": 0
@@ -133,24 +328,24 @@
           "recognition": {
             "text": {
               "scores": [
-                0.9375,
-                0.8333333333333334,
+                0.9318181818181818,
+                0.8235294117647058,
                 0.0,
-                0.041666666666666664,
+                0.043478260869565216,
                 0.0,
-                0.024390243902439025,
+                0.02564102564102564,
                 0.0,
                 0.25,
                 0.0,
-                0.0625,
-                0.04838709677419355,
+                0.06578947368421052,
+                0.05084745762711865,
                 0.0,
                 0.0,
-                0.014705882352941176,
+                0.015384615384615385,
                 0.0,
                 0.0,
                 0.0,
-                0.01639344262295082,
+                0.017241379310344827,
                 0.06666666666666667,
                 0.0,
                 0.0,
@@ -167,7 +362,7 @@
                 0.0,
                 0.125,
                 0.0,
-                0.2857142857142857,
+                0.16666666666666666,
                 0.0,
                 0.0,
                 0.16666666666666666,
@@ -180,14 +375,14 @@
                 1.0,
                 0.0,
                 0.0,
-                0.25,
+                0.3333333333333333,
                 0.2,
                 0.0,
                 0.0,
                 0.0
               ],
               "num_pairs": 52,
-              "mean": 0.12389170632970362,
+              "mean": 0.1231059150745682,
               "num_coverage": 41
             },
             "liding": {
@@ -196,49 +391,273 @@
               "mean": 0.0
             }
           },
-          "composite": 0.09776860668494612
+          "composite": 0.1625621787866488
+        },
+        "山海经册.四册.元.曹善书.纸本楷书.元至正二十五年.台北故宫博物院藏.黑白版": {
+          "error": "no prediction found"
+        },
+        "论文_1": {
+          "image_id": "论文_1",
+          "detection": {
+            "text": {
+              "precision": 0.9523809523809523,
+              "recall": 0.40816326530612246,
+              "f1": 0.5714285714285714,
+              "num_pred": 21,
+              "num_gt": 49,
+              "num_matched": 20
+            },
+            "liding": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 0,
+              "num_gt": 8,
+              "num_matched": 0
+            },
+            "oracle": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 0,
+              "num_gt": 1,
+              "num_matched": 0
+            },
+            "picture": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 4,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "overall": {
+              "precision": 0.84,
+              "recall": 0.3620689655172414,
+              "f1": 0.5060240963855421,
+              "num_pred": 25,
+              "num_gt": 58,
+              "num_matched": 21
+            }
+          },
+          "classification": {
+            "accuracy": 0.9047619047619048,
+            "correct": 19,
+            "total": 21,
+            "confusion": {
+              "text -> text": 19,
+              "text -> oracle": 1,
+              "text -> liding": 1
+            }
+          },
+          "recognition": {
+            "text": {
+              "scores": [
+                0.6776315789473685,
+                0.8695652173913043,
+                0.65625,
+                0.4090909090909091,
+                0.875,
+                0.5862068965517241,
+                0.9868421052631579,
+                0.9508196721311475,
+                0.9886363636363636,
+                0.0,
+                0.0,
+                0.5384615384615384,
+                0.8,
+                0.0,
+                0.8,
+                0.8235294117647058,
+                0.25,
+                0.23809523809523808,
+                0.8367346938775511,
+                0.0,
+                0.0,
+                0.2857142857142857,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.045454545454545456,
+                0.0,
+                0.0,
+                0.07142857142857142,
+                0.0,
+                0.0,
+                0.0,
+                0.016129032258064516,
+                0.0,
+                0.3953488372093023,
+                0.6666666666666666,
+                0.2727272727272727,
+                0.0,
+                0.6666666666666666,
+                0.2777777777777778,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.6666666666666666,
+                0.0,
+                0.0
+              ],
+              "num_pairs": 49,
+              "mean": 0.30717232546491485,
+              "num_coverage": 30
+            },
+            "liding": {
+              "scores": [],
+              "num_pairs": 0,
+              "mean": 0.0
+            }
+          },
+          "composite": 0.12536881729682495
+        },
+        "论文_2": {
+          "image_id": "论文_2",
+          "detection": {
+            "text": {
+              "precision": 0.8125,
+              "recall": 0.3939393939393939,
+              "f1": 0.5306122448979591,
+              "num_pred": 16,
+              "num_gt": 33,
+              "num_matched": 13
+            },
+            "liding": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "num_pred": 0,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "oracle": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 0,
+              "num_gt": 13,
+              "num_matched": 0
+            },
+            "picture": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "num_pred": 2,
+              "num_gt": 0,
+              "num_matched": 0
+            },
+            "overall": {
+              "precision": 0.7222222222222222,
+              "recall": 0.2826086956521739,
+              "f1": 0.40625,
+              "num_pred": 18,
+              "num_gt": 46,
+              "num_matched": 13
+            }
+          },
+          "classification": {
+            "accuracy": 0.9230769230769231,
+            "correct": 12,
+            "total": 13,
+            "confusion": {
+              "text -> text": 12,
+              "text -> oracle": 1
+            }
+          },
+          "recognition": {
+            "text": {
+              "scores": [
+                0.5892857142857143,
+                0.25,
+                0.5822784810126582,
+                0.6,
+                0.7457627118644068,
+                0.5,
+                0.27419354838709675,
+                0.8714285714285714,
+                1.0,
+                0.034482758620689655,
+                0.0625,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.46153846153846156,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.058823529411764705,
+                0.0,
+                0.0,
+                0.02040816326530612,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "num_pairs": 33,
+              "mean": 0.18941521029741423,
+              "num_coverage": 21
+            },
+            "liding": {
+              "scores": [],
+              "num_pairs": 0,
+              "mean": 0.0
+            }
+          },
+          "composite": 0.5081881617512125
         }
       },
       "summary": {
         "detection": {
           "text": {
-            "mean_precision": 0.8333333333333333,
-            "mean_recall": 0.3634615384615385,
-            "mean_f1": 0.4963768115942029
+            "mean_precision": 0.9608134920634921,
+            "mean_recall": 0.28303387089101373,
+            "mean_f1": 0.4095380503247998
           },
           "liding": {
-            "mean_precision": 0.0,
-            "mean_recall": 0.0,
-            "mean_f1": 0.0
+            "mean_precision": 0.6666666666666666,
+            "mean_recall": 0.6666666666666666,
+            "mean_f1": 0.6666666666666666
           },
           "oracle": {
-            "mean_precision": 0.0,
-            "mean_recall": 0.0,
-            "mean_f1": 0.0
+            "mean_precision": 0.3333333333333333,
+            "mean_recall": 0.3333333333333333,
+            "mean_f1": 0.3333333333333333
           },
           "picture": {
-            "mean_precision": 0.0,
-            "mean_recall": 0.0,
-            "mean_f1": 0.0
+            "mean_precision": 0.5,
+            "mean_recall": 0.5,
+            "mean_f1": 0.5
           },
           "overall": {
-            "mean_precision": 0.75,
-            "mean_recall": 0.21333333333333332,
-            "mean_f1": 0.32763975155279507
+            "mean_precision": 0.8853703703703704,
+            "mean_recall": 0.2103250647403571,
+            "mean_f1": 0.31987886270178484
           }
         },
         "recognition": {
           "text": {
-            "mean_error_rate": 0.12170570538160058
+            "mean_error_rate": 0.17885655767439804
           },
           "liding": {
             "mean_error_rate": 0.0
           }
         },
-        "classification_accuracy": 0.5735294117647058,
-        "mean_composite": 0.08740531627350753,
-        "num_images": 2,
-        "num_evaluated": 2
+        "classification_accuracy": 0.8569273863391511,
+        "mean_composite": 0.42879279570763434,
+        "num_images": 7,
+        "num_evaluated": 6
       },
       "config": {
         "iou_threshold": 0.5,

@@ -140,7 +140,21 @@ def liding_score(reference: str, hypothesis: str, config: EvalConfig) -> dict:
 def detection_metrics(
     num_pred: int, num_gt: int, num_matched: int,
 ) -> dict:
-    """Compute precision, recall, F1 for detection."""
+    """Compute precision, recall, F1 for detection.
+
+    When both num_pred and num_gt are zero for a label, the image contains
+    no instance of that label and the model makes no prediction — this is
+    perfect agreement, so F1 = 1.0.
+    """
+    if num_pred == 0 and num_gt == 0:
+        return {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "num_pred": 0,
+            "num_gt": 0,
+            "num_matched": 0,
+        }
     precision = num_matched / num_pred if num_pred > 0 else 0.0
     recall = num_matched / num_gt if num_gt > 0 else 0.0
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0

@@ -1,0 +1,17 @@
+# Python 编译文件和缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虚拟环境目录（如果您在这个目录下创建了虚拟环境）
+.venv/
+venv/
+env/
+
+# IDE 和编辑器配置
+.vscode/
+.idea/
+
+# 其他数据文件或生成的配置（如果不需要提交的话）
+*.log
+.DS_Store
