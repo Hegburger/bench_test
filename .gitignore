@@ -1,3 +1,9 @@
+*.html
+
+*.claude
+
+*.pyc
+
 # Python 编译文件和缓存
 __pycache__/
 *.py[cod]
