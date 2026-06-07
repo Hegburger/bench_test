@@ -47,35 +47,51 @@ def char_error_rate(reference: str, hypothesis: str, case_sensitive: bool = Fals
 
 
 def substring_cer(reference: str, hypothesis: str, case_sensitive: bool = False) -> float:
+    """Best-case CER by sliding a window of len(reference) over hypothesis."""
+    score, _ = _substring_cer_inner(reference, hypothesis, case_sensitive)
+    return score
+
+
+def substring_cer_with_window(
+    reference: str, hypothesis: str, case_sensitive: bool = False,
+) -> tuple[float, str]:
+    """Like substring_cer but also returns the best-matching window text."""
+    return _substring_cer_inner(reference, hypothesis, case_sensitive)
+
+
+def _substring_cer_inner(
+    reference: str, hypothesis: str, case_sensitive: bool = False,
+) -> tuple[float, str]:
     """Best-case CER by sliding a window of len(reference) over hypothesis.
 
     For granularity mismatch: when a layout-level prediction covers multiple
     GT regions, the GT text may be a substring of the long prediction text.
     This finds the best alignment before computing CER.
 
-    Returns a value in [0, 1] (lower is better).
+    Returns (score, best_window) where score ∈ [0, 1] (lower is better).
     Falls back to regular CER if hypothesis is not longer than reference.
     """
     n = len(reference)
     m = len(hypothesis)
 
     if n == 0 or m == 0:
-        return char_error_rate(reference, hypothesis, case_sensitive)
+        return char_error_rate(reference, hypothesis, case_sensitive), hypothesis
 
     if m <= n:
-        return char_error_rate(reference, hypothesis, case_sensitive)
+        return char_error_rate(reference, hypothesis, case_sensitive), hypothesis
 
-    # Slide window, find min CER
     best = 1.0
+    best_window = hypothesis[:n]
     for start in range(m - n + 1):
         window = hypothesis[start:start + n]
         cer = char_error_rate(reference, window, case_sensitive)
         if cer < best:
             best = cer
+            best_window = window
         if best == 0.0:
             break
 
-    return best
+    return best, best_window
 
 
 def normalized_edit_distance(reference: str, hypothesis: str, case_sensitive: bool = False) -> float:

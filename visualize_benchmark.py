@@ -9,7 +9,7 @@ Usage:
     python visualize_benchmark.py
 
     # Or with custom paths:
-    python visualize_benchmark.py --debug debug_results.json --image-dir data/image --output viz.html
+    python visualize_benchmark.py --debug benchmark_results.json --image-dir data/image --output benchmark_viz.html
 """
 
 import argparse
@@ -473,6 +473,10 @@ function showTooltip(x, y, item) {
         if (item.rec_score !== undefined && item.rec_score !== null) {
             lines.push(`识别错误率: ${item.rec_score}`);
         }
+        if (item.best_window) {
+            lines.push(`--- 最佳滑动窗口 ---`);
+            lines.push(truncateText(item.best_window, 60));
+        }
     } else if (item.type === 'unmatched_pred') {
         header = '未匹配 Prediction';
         lines.push(`标签: ${item.label}`);
@@ -557,9 +561,26 @@ function updateDetail() {
         html += `<tr><td class="key">识别错误率</td><td class="val ${rsClass}">${rsStr} <span style="font-size:10px;color:var(--text-dim)">(0=完美, 越低越好)</span></td></tr>`;
     }
 
+    // Best sliding window (coverage pairs only)
+    if (s.type === 'coverage' && s.best_window) {
+        html += `<tr><td class="key">最佳滑动窗口</td><td class="val" style="font-size:11px;background:rgba(156,39,176,0.12);padding:6px;border-radius:3px">${escapeHtml(s.best_window)}</td></tr>`;
+        // Show brief diff: GT chars vs window length
+        if (s.gt_text && s.gt_text !== s.best_window) {
+            let gtLen = s.gt_text.length;
+            let winLen = s.best_window.length;
+            html += `<tr><td class="key"></td><td class="val" style="font-size:10px;color:var(--text-dim)">窗口长度: ${winLen} / GT长度: ${gtLen}</td></tr>`;
+        }
+    }
+
     // Text content
     if (s.pred_text) {
-        html += `<tr><td class="key">Pred 文本</td><td class="val" style="font-size:11px">${escapeHtml(s.pred_text)}</td></tr>`;
+        let displayText = s.pred_text;
+        let extraInfo = '';
+        if (s.type === 'coverage' && s.pred_text.length > 200) {
+            displayText = s.pred_text.substring(0, 200) + '…';
+            extraInfo = ` <span style="font-size:10px;color:var(--text-dim)">(共${s.pred_text.length}字, 显示前200)</span>`;
+        }
+        html += `<tr><td class="key">Pred 文本</td><td class="val" style="font-size:11px;max-height:120px;overflow-y:auto">${escapeHtml(displayText)}${extraInfo}</td></tr>`;
     }
     if (s.gt_text) {
         html += `<tr><td class="key">GT 文本</td><td class="val" style="font-size:11px">${escapeHtml(s.gt_text)}</td></tr>`;
@@ -578,6 +599,12 @@ function updateDetail() {
 
 function escapeHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function truncateText(s, maxLen) {
+    if (!s) return '';
+    if (s.length <= maxLen) return s;
+    return s.substring(0, maxLen) + '…';
 }
 
 // ── Stats grid ──

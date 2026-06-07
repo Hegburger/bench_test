@@ -10,6 +10,7 @@ from benchmark.metrics import (
     char_error_rate,
     liding_score,
     substring_cer,
+    substring_cer_with_window,
     detection_metrics,
     classification_accuracy,
     composite_score,
@@ -79,8 +80,8 @@ def evaluate_image(
                 "gt_label": gt_r.label,
                 "pred_bbox": pred_r.bbox,
                 "gt_bbox": gt_r.bbox,
-                "pred_text": pred_r.transcription[:80],
-                "gt_text": gt_r.transcription[:80],
+                "pred_text": pred_r.transcription,
+                "gt_text": gt_r.transcription,
                 "match_method": method,
                 "match_score": round(match_score, 4),
             })
@@ -128,8 +129,11 @@ def evaluate_image(
             continue
 
         if label == "text":
-            score = char_error_rate(gt_r.transcription, pred_r.transcription,
-                                    case_sensitive=config.text_case_sensitive)
+            # Use substring CER so that containment-matched pairs
+            # (small GT inside large layout block) are evaluated fairly:
+            # the GT text is searched as a substring of the long pred text.
+            score = substring_cer(gt_r.transcription, pred_r.transcription,
+                                  case_sensitive=config.text_case_sensitive)
             recognition[label]["scores"].append(score)
         elif label == "liding":
             result = liding_score(gt_r.transcription, pred_r.transcription, config)
@@ -197,9 +201,12 @@ def evaluate_image(
             continue
 
         label = gt_r.label
+        best_window = ""
         if label == "text":
-            score = substring_cer(gt_r.transcription, best_pred.transcription,
-                                  case_sensitive=config.text_case_sensitive)
+            score, best_window = substring_cer_with_window(
+                gt_r.transcription, best_pred.transcription,
+                case_sensitive=config.text_case_sensitive,
+            )
             coverage_rec[label]["scores"].append(score)
         elif label == "liding":
             result = liding_score(gt_r.transcription, best_pred.transcription, config)
@@ -220,8 +227,9 @@ def evaluate_image(
                 "gt_label": gt_r.label,
                 "pred_bbox": best_pred.bbox,
                 "gt_bbox": gt_r.bbox,
-                "pred_text": best_pred.transcription[:80],
-                "gt_text": gt_r.transcription[:80],
+                "pred_text": best_pred.transcription,
+                "gt_text": gt_r.transcription,
+                "best_window": best_window,
                 "coverage": round(best_cover, 4),
                 "rec_score": round(score, 4) if isinstance(score, (int, float)) else score,
             })
@@ -272,14 +280,14 @@ def evaluate_image(
             if i not in matched_pred:
                 unmatched_preds.append({
                     "idx": i, "label": r.label,
-                    "bbox": r.bbox, "text": r.transcription[:80],
+                    "bbox": r.bbox, "text": r.transcription,
                 })
         unmatched_gts = []
         for j, r in enumerate(gt.regions):
             if j not in evaluated_gt:
                 unmatched_gts.append({
                     "idx": j, "label": r.label,
-                    "bbox": r.bbox, "text": r.transcription[:80],
+                    "bbox": r.bbox, "text": r.transcription,
                 })
 
         result["debug"] = {

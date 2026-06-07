@@ -1,6 +1,7 @@
 """CLI entry point for the document parsing benchmark.
 
 Usage:
+    python run_benchmark.py --model-dir data/prediction/paddleV1.5 --model paddle_ocr_vl --debug
     python run_benchmark.py                          # evaluate all GT with all adapters
     python run_benchmark.py --gt-dir data/GT         # specify GT directory
     python run_benchmark.py --output results.json    # specify output file
